@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Raten Sie das Wort Spiel</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Raten Sie das Wort Spiel</h1>
+    <p>Erraten Sie das Wort: <span id="wordDisplay"></span></p>
+    <p>Versuche übrig: <span id="attemptsDisplay"></span></p>
+    <p>Buchstaben eingeben: <input type="text" id="guessInput" maxlength="1"></p>
+    <button onclick="checkGuess()">Überprüfen</button>
+
+    <script>
+        // Das zu erratende Wort
+        const wordToGuess = "javascript";
+        let guessedWord = Array(wordToGuess.length).fill('_');
+
+        // Anzahl der Versuche
+        let remainingAttempts = 6;
+
+        // Funktion zur Aktualisierung der Anzeige
+        function updateDisplay() {
+            document.getElementById('wordDisplay').textContent = guessedWord.join(' ');
+            document.getElementById('attemptsDisplay').textContent = remainingAttempts;
+        }
+
+        // Funktion zur Überprüfung des eingegebenen Buchstabens
+        function checkGuess() {
+            const guessInput = document.getElementById('guessInput');
+            const guess = guessInput.value.toLowerCase();
+            guessInput.value = '';
+
+            if (guess.length !== 1) {
+                alert('Bitte geben Sie genau einen Buchstaben ein.');
+                return;
+            }
+
+            if (wordToGuess.includes(guess)) {
+                for (let i = 0; i < wordToGuess.length; i++) {
+                    if (wordToGuess[i] === guess) {
+                        guessedWord[i] = guess;
+                    }
+                }
+            } else {
+                remainingAttempts--;
+            }
+
+            updateDisplay();
+
+            if (guessedWord.join('') === wordToGuess) {
+                alert('Glückwunsch! Sie haben das Wort erraten: ' + wordToGuess);
+            } else if (remainingAttempts === 0) {
+                alert('Das Spiel ist vorbei. Das Wort war: ' + wordToGuess);
+            }
+        }
+
+        // Initialisierung der Anzeige
+        updateDisplay();
+    </script>
+</body>
+</html>
